@@ -1,0 +1,107 @@
+{
+  "hash": "9b03070b73e2a151b4be",
+  "version": "5.85.1",
+  "time": 299,
+  "builtAt": 1691388422051,
+  "publicPath": "auto",
+  "outputPath": "D:\\website\\hts\\chat\\frontend\\dist",
+  "assetsByChunkName": { "main": ["main.js"] },
+  "assets": [
+    {
+      "type": "asset",
+      "name": "main.js",
+      "size": 0,
+      "emitted": false,
+      "comparedForEmit": false,
+      "cached": true,
+      "info": { "javascriptModule": false, "minimized": true },
+      "chunkNames": ["main"],
+      "chunkIdHints": [],
+      "auxiliaryChunkNames": [],
+      "auxiliaryChunkIdHints": [],
+      "related": {},
+      "chunks": [179],
+      "auxiliaryChunks": [],
+      "isOverSizeLimit": false
+    }
+  ],
+  "chunks": [
+    {
+      "rendered": true,
+      "initial": true,
+      "entry": true,
+      "recorded": false,
+      "size": 0,
+      "sizes": {},
+      "names": ["main"],
+      "idHints": [],
+      "runtime": ["main"],
+      "files": ["main.js"],
+      "auxiliaryFiles": [],
+      "hash": "fe592d596906326c6fbe",
+      "childrenByOrder": {},
+      "id": 179,
+      "siblings": [],
+      "parents": [],
+      "children": [],
+      "modules": [],
+      "origins": [
+        {
+          "module": "",
+          "moduleIdentifier": "",
+          "moduleName": "",
+          "loc": "main",
+          "request": "./src"
+        }
+      ]
+    }
+  ],
+  "modules": [],
+  "entrypoints": {
+    "main": {
+      "name": "main",
+      "chunks": [179],
+      "assets": [{ "name": "main.js" }],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "auxiliaryAssets": [],
+      "filteredAuxiliaryAssets": 0,
+      "auxiliaryAssetsSize": 0,
+      "children": {},
+      "childAssets": {},
+      "isOverSizeLimit": false
+    }
+  },
+  "namedChunkGroups": {
+    "main": {
+      "name": "main",
+      "chunks": [179],
+      "assets": [{ "name": "main.js" }],
+      "filteredAssets": 0,
+      "assetsSize": null,
+      "auxiliaryAssets": [],
+      "filteredAuxiliaryAssets": 0,
+      "auxiliaryAssetsSize": 0,
+      "children": {},
+      "childAssets": {},
+      "isOverSizeLimit": false
+    }
+  },
+  "errors": [
+    {
+      "loc": "main",
+      "message": "Module not found: Error: Can't resolve './src' in 'D:\\website\\hts\\chat\\frontend'",
+      "details": "resolve './src' in 'D:\\website\\hts\\chat\\frontend'\n  using description file: D:\\website\\hts\\chat\\frontend\\package.json (relative path: .)\n    Field 'browser' doesn't contain a valid alias configuration\n    using description file: D:\\website\\hts\\chat\\frontend\\package.json (relative path: ./src)\n      no extension\n        Field 'browser' doesn't contain a valid alias configuration\n        D:\\website\\hts\\chat\\frontend\\src is not a file\n      .js\n        Field 'browser' doesn't contain a valid alias configuration\n        D:\\website\\hts\\chat\\frontend\\src.js doesn't exist\n      .json\n        Field 'browser' doesn't contain a valid alias configuration\n        D:\\website\\hts\\chat\\frontend\\src.json doesn't exist\n      .wasm\n        Field 'browser' doesn't contain a valid alias configuration\n        D:\\website\\hts\\chat\\frontend\\src.wasm doesn't exist\n      as directory\n        existing directory D:\\website\\hts\\chat\\frontend\\src\n          using description file: D:\\website\\hts\\chat\\frontend\\package.json (relative path: ./src)\n            using path: D:\\website\\hts\\chat\\frontend\\src\\index\n              using description file: D:\\website\\hts\\chat\\frontend\\package.json (relative path: ./src/index)\n                no extension\n                  Field 'browser' doesn't contain a valid alias configuration\n                  D:\\website\\hts\\chat\\frontend\\src\\index doesn't exist\n                .js\n                  Field 'browser' doesn't contain a valid alias configuration\n                  D:\\website\\hts\\chat\\frontend\\src\\index.js doesn't exist\n                .json\n                  Field 'browser' doesn't contain a valid alias configuration\n                  D:\\website\\hts\\chat\\frontend\\src\\index.json doesn't exist\n                .wasm\n                  Field 'browser' doesn't contain a valid alias configuration\n                  D:\\website\\hts\\chat\\frontend\\src\\index.wasm doesn't exist",
+      "stack": "ModuleNotFoundError: Module not found: Error: Can't resolve './src' in 'D:\\website\\hts\\chat\\frontend'\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compilation.js:2022:28\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:817:13\n    at eval (eval at create (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:10:1)\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:275:22\n    at eval (eval at create (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:9:1)\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:448:22\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:118:11\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:689:25\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:893:8\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\NormalModuleFactory.js:1013:5"
+    }
+  ],
+  "errorsCount": 1,
+  "warnings": [
+    {
+      "message": "configuration\nThe 'mode' option has not been set, webpack will fallback to 'production' for this value.\nSet 'mode' option to 'development' or 'production' to enable defaults for each environment.\nYou can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/",
+      "stack": "NoModeWarning: configuration\nThe 'mode' option has not been set, webpack will fallback to 'production' for this value.\nSet 'mode' option to 'development' or 'production' to enable defaults for each environment.\nYou can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/configuration/mode/\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\WarnNoModeSetPlugin.js:20:30\n    at Hook.eval [as call] (eval at create (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:19:10), <anonymous>:21:1)\n    at Hook.CALL_DELEGATE [as _call] (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\Hook.js:14:14)\n    at Compiler.newCompilation (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compiler.js:1124:30)\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compiler.js:1169:29\n    at Hook.eval [as callAsync] (eval at create (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:6:1)\n    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\tapable\\lib\\Hook.js:18:14)\n    at Compiler.compile (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compiler.js:1164:28)\n    at C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compiler.js:524:12\n    at Compiler.readRecords (C:\\Users\\spike\\AppData\\Roaming\\npm\\node_modules\\webpack-cli\\node_modules\\webpack\\lib\\Compiler.js:989:5)"
+    }
+  ],
+  "warningsCount": 1,
+  "children": []
+}
