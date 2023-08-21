@@ -9,6 +9,14 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = defineConfig({
   publicPath: "./",
   transpileDependencies: true,
+  chainWebpack(config) {
+    config.module.rule("font")
+      .test(/\.(ttf|woff)$/)
+      .use("url-loader")
+      .loader("url-loader").options({
+        name: "static/[name].[ext]"//图片大于等于10k时，设置打包后图片的存放位置 name是文件名   ext是文件后缀
+      })
+  },
 
   configureWebpack: {
     optimization: {

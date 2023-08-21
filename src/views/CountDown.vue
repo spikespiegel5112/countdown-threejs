@@ -1,7 +1,8 @@
 <template>
   <div class="countdown" ref="countdownRef">
+    <Firework />
     <Background />
-    <Star />
+    <!-- <Star /> -->
   </div>
 </template>
 
@@ -25,6 +26,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 import Background from "./Background.vue";
 import Star from "./Star.vue";
+import Firework from "./Firework.vue";
 
 const countdownRef = ref(null);
 
@@ -46,7 +48,8 @@ let text1 = "距离护网结束还有";
 let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
-const deadlineStr = "2023-08-22 21:00:00";
+// const deadlineStr = "2023-08-23 21:00:00";
+const deadlineStr = "2023-08-21 16:33:00";
 
 let font = null;
 
@@ -67,7 +70,7 @@ const width = 20,
   hover = 100,
   hover2 = -30,
   curveSegments = 4,
-  bevelThickness = 1,
+  bevelThickness = 5,
   bevelSize = 1.5;
 const innerWidth = window.innerWidth;
 const innerHeight = window.innerHeight;
@@ -118,11 +121,15 @@ const initThree = () => {
     scene.add(group);
 
     const loader = new TTFLoader();
+    const fontJson = require("@/assets/HanYiXiJianHeiJian-1.json");
+    font = new Font(fontJson);
+    createText1();
 
-    loader.load(require("@/assets/HanYiXiJianHeiJian-1.ttf"), function (json) {
-      font = new Font(json);
-      createText1();
-    });
+    // loader.load(require("@/assets/HanYiXiJianHeiJian-1.ttf"), function (json) {
+    //   console.log("loader.load+++", JSON.stringify(json));
+    //   font = new Font(json);
+    //   createText1();
+    // });
 
     const plane = new THREE.Mesh(
       new THREE.PlaneGeometry(10000, 10000),
