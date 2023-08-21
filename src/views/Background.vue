@@ -46,15 +46,16 @@ span {
 }
 
 .background {
-  background-color: #0c0003;
+  // background-color: #0c0003;
+  opacity: 0.5;
   background-image: radial-gradient(
       closest-side,
       rgb(29, 1, 93),
       rgba(235, 105, 78, 0)
     ),
-    radial-gradient(closest-side, rgb(7, 92, 75), rgba(243, 11, 164, 0)),
-    radial-gradient(closest-side, rgb(0, 60, 36), rgba(254, 234, 131, 0)),
-    radial-gradient(closest-side, rgb(158, 7, 234), rgba(170, 142, 245, 0));
+    radial-gradient(closest-side, rgb(0, 83, 142), rgba(243, 11, 164, 0)),
+    radial-gradient(closest-side, rgb(69, 0, 38), rgba(254, 234, 131, 0)),
+    radial-gradient(closest-side, rgb(7, 177, 234), rgba(170, 142, 245, 0));
   background-size: 130vw 130vh, 120vw 120vh, 100vw 150vh, 120vw 130vh;
   background-position: -80vw -80vh, 30vw -20vh, -20vw 20vh, 30vw 20vh;
   background-repeat: no-repeat;

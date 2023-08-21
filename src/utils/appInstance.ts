@@ -11,8 +11,8 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 const app = createApp(App);
 
 import moment from "moment";
-import "moment/locale/zh-cn";
-moment.locale("zh-cn");
+// import "moment/locale/zh-cn";
+// moment.locale("zh-cn");
 import { store, key } from "@/store";
 
 app.config.globalProperties.$moment = moment;

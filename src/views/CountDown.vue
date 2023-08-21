@@ -1,6 +1,7 @@
 <template>
   <div class="countdown" ref="countdownRef">
     <Background />
+    <Star />
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import { Font } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 import Background from "./Background.vue";
+import Star from "./Star.vue";
 
 const countdownRef = ref(null);
 
@@ -35,31 +37,31 @@ const currentRoute = computed(() => {
   return global.$route;
 }) as any;
 
+let container;
+let camera, cameraTarget, scene, renderer;
+let group, textMesh1, textMesh2, textGeo, material;
+let firstLetter = true;
+const mirror = true;
+let text = "three.js";
+
+let font = null;
+
+let targetRotation = 0;
+let targetRotationOnPointerDown = 0;
+
+let pointerX = 0;
+let pointerXOnPointerDown = 0;
+
+let windowHalfX = window.innerWidth / 2;
+
+const height = 20,
+  size = 70,
+  hover = 30,
+  curveSegments = 4,
+  bevelThickness = 2,
+  bevelSize = 1.5;
+
 const initThree = () => {
-  let container;
-  let camera, cameraTarget, scene, renderer;
-  let group, textMesh1, textMesh2, textGeo, material;
-  let firstLetter = true;
-
-  let text = "three.js";
-  const height = 20,
-    size = 70,
-    hover = 30,
-    curveSegments = 4,
-    bevelThickness = 2,
-    bevelSize = 1.5;
-
-  let font = null;
-  const mirror = true;
-
-  let targetRotation = 0;
-  let targetRotationOnPointerDown = 0;
-
-  let pointerX = 0;
-  let pointerXOnPointerDown = 0;
-
-  let windowHalfX = window.innerWidth / 2;
-
   init();
   animate();
 
@@ -192,59 +194,6 @@ const initThree = () => {
     }
   }
 
-  function createText() {
-    textGeo = new TextGeometry(text, {
-      font: font,
-
-      size: size,
-      height: height,
-      curveSegments: curveSegments,
-
-      bevelThickness: bevelThickness,
-      bevelSize: bevelSize,
-      bevelEnabled: true,
-    });
-
-    textGeo.computeBoundingBox();
-    textGeo.computeVertexNormals();
-
-    const centerOffset =
-      -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
-
-    textMesh1 = new THREE.Mesh(textGeo, material);
-
-    textMesh1.position.x = centerOffset;
-    textMesh1.position.y = hover;
-    textMesh1.position.z = 0;
-
-    textMesh1.rotation.x = 0;
-    textMesh1.rotation.y = Math.PI * 2;
-
-    group.add(textMesh1);
-
-    if (mirror) {
-      textMesh2 = new THREE.Mesh(textGeo, material);
-
-      textMesh2.position.x = centerOffset;
-      textMesh2.position.y = -hover;
-      textMesh2.position.z = height;
-
-      textMesh2.rotation.x = Math.PI;
-      textMesh2.rotation.y = Math.PI * 2;
-
-      group.add(textMesh2);
-    }
-  }
-
-  function refreshText() {
-    group.remove(textMesh1);
-    if (mirror) group.remove(textMesh2);
-
-    if (!text) return;
-
-    createText();
-  }
-
   function onPointerDown(event) {
     if (event.isPrimary === false) return;
 
@@ -284,8 +233,103 @@ const initThree = () => {
   }
 };
 
+const refreshText = () => {
+  group.remove(textMesh1);
+  if (mirror) group.remove(textMesh2);
+
+  if (!text) return;
+
+  createText();
+};
+
+const createText = () => {
+  textGeo = new TextGeometry(text, {
+    font: font,
+
+    size: size,
+    height: height,
+    curveSegments: curveSegments,
+
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: true,
+  });
+
+  textGeo.computeBoundingBox();
+  textGeo.computeVertexNormals();
+
+  const centerOffset =
+    -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+
+  textMesh1 = new THREE.Mesh(textGeo, material);
+
+  textMesh1.position.x = centerOffset;
+  textMesh1.position.y = hover;
+  textMesh1.position.z = 0;
+
+  textMesh1.rotation.x = 0;
+  textMesh1.rotation.y = Math.PI * 2;
+
+  group.add(textMesh1);
+
+  if (mirror) {
+    textMesh2 = new THREE.Mesh(textGeo, material);
+
+    textMesh2.position.x = centerOffset;
+    textMesh2.position.y = -hover;
+    textMesh2.position.z = height;
+
+    textMesh2.rotation.x = Math.PI;
+    textMesh2.rotation.y = Math.PI * 2;
+
+    group.add(textMesh2);
+  }
+};
+
+const addZero: any = (num: string | number, length = 2) => {
+  if ((num + "").length >= length) {
+    return num;
+  }
+  return addZero("0" + num, length);
+};
+
+const countDown = () => {
+  const dataOffset = 8 * 60 * 60 * 1000;
+  const deadlineTimeStamp = global.$moment("2023-08-21 15:00:00");
+
+  const loop = () => {
+    setTimeout(() => {
+      var x = global.$moment(); //当前时间
+      // var duration = global.$moment.duration(deadlineTimeStamp.diff(x));
+      // const durationAsMilliseconds = duration.as("milliseconds");
+
+      const duratioTimeStamp = global
+        .$moment(deadlineTimeStamp)
+        .diff(global.$moment(x), "milliseconds");
+      const hours = global.$moment.duration(duratioTimeStamp).hours();
+      const minutes = global.$moment.duration(duratioTimeStamp).minutes();
+      const seconds = global.$moment.duration(duratioTimeStamp).seconds();
+
+      text = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
+
+      console.log(duratioTimeStamp);
+      console.log(
+        global
+          .$moment(duratioTimeStamp)
+          // .locale("zh-cn")
+          .format("yyyy-MM-DD hh:mm:ss")
+      );
+      console.log(text);
+      refreshText();
+      loop();
+    }, 1000);
+  };
+  loop();
+};
+
 onMounted(async () => {
   initThree();
+  countDown();
   nextTick();
 });
 </script>
