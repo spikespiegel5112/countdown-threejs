@@ -39,12 +39,18 @@ const currentRoute = computed(() => {
 
 let container;
 let camera, cameraTarget, scene, renderer;
-let group, textMesh1, textMesh2, textGeo, material;
+let group, textMesh1, textMesh2, textMesh3, textMesh4, material;
 let firstLetter = true;
 const mirror = true;
-let text = "three.js";
+let text1 = "距离护网结束还有";
+let text2 = "00:00:00";
+let text3 = "海通恒信护网行动工作";
+let text4 = "圆满完成";
+const deadlineStr = "2023-08-22 21:00:00";
 
 let font = null;
+
+let finshFlag = false;
 
 let targetRotation = 0;
 let targetRotationOnPointerDown = 0;
@@ -54,12 +60,17 @@ let pointerXOnPointerDown = 0;
 
 let windowHalfX = window.innerWidth / 2;
 
-const height = 20,
-  size = 70,
-  hover = 30,
+const width = 20,
+  height = 20,
+  size = 35,
+  size2 = 80,
+  hover = 100,
+  hover2 = -30,
   curveSegments = 4,
-  bevelThickness = 2,
+  bevelThickness = 1,
   bevelSize = 1.5;
+const innerWidth = window.innerWidth;
+const innerHeight = window.innerHeight;
 
 const initThree = () => {
   init();
@@ -67,67 +78,63 @@ const initThree = () => {
 
   function init() {
     container = document.createElement("div");
-    const appEl = document.getElementById("app");
 
     countdownRef.value.appendChild(container);
 
     // CAMERA
 
-    camera = new THREE.PerspectiveCamera(
-      30,
-      window.innerWidth / window.innerHeight,
-      1,
-      1500
-    );
-    camera.position.set(0, 400, 700);
+    camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 1, 1500);
+    camera.position.set(0, 100, 1500);
 
-    cameraTarget = new THREE.Vector3(0, 150, 0);
+    cameraTarget = new THREE.Vector3(0, 0, 0);
 
     // SCENE
 
     scene = new THREE.Scene();
     scene.background = null;
-    scene.fog = new THREE.Fog(0x000000, 250, 1400);
+    scene.fog = new THREE.Fog(0x000000, 20, 5000);
 
     // LIGHTS
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.4);
+    const dirLight1 = new THREE.DirectionalLight(0xffffff, 1);
     dirLight1.position.set(0, 0, 1).normalize();
     scene.add(dirLight1);
 
-    const dirLight2 = new THREE.DirectionalLight(0xffffff, 2);
-    dirLight2.position.set(0, hover, 10).normalize();
-    dirLight2.color.setHSL(Math.random(), 1, 0.5, THREE.SRGBColorSpace);
-    scene.add(dirLight2);
+    // const dirLight2 = new THREE.DirectionalLight(0xffffff, 2);
+    // dirLight2.position.set(0, hover, 10).normalize();
+    // dirLight2.color.setHSL(0.3, 1, 1, THREE.SRGBColorSpace);
+    // scene.add(dirLight2);
 
     material = new THREE.MeshPhongMaterial({
       color: 0xffffff,
       flatShading: true,
+      specular: "white",
+      shininess: 300,
     });
 
     group = new THREE.Group();
-    group.position.y = 100;
+    group.position.y = 0;
 
     scene.add(group);
 
     const loader = new TTFLoader();
 
-    loader.load(require("@/assets/kenpixel.ttf"), function (json) {
+    loader.load(require("@/assets/HanYiXiJianHeiJian-1.ttf"), function (json) {
       font = new Font(json);
-      createText();
+      createText1();
     });
 
-    // const plane = new THREE.Mesh(
-    //   new THREE.PlaneGeometry(10000, 10000),
-    //   new THREE.MeshBasicMaterial({
-    //     color: 0xffffff,
-    //     opacity: 0.5,
-    //     transparent: true,
-    //   })
-    // );
-    // plane.position.y = 100;
-    // plane.rotation.x = -Math.PI / 2;
-    // scene.add(plane);
+    const plane = new THREE.Mesh(
+      new THREE.PlaneGeometry(10000, 10000),
+      new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        opacity: 0.2,
+        transparent: true,
+      })
+    );
+    plane.position.y = 100;
+    plane.rotation.x = -Math.PI / 2;
+    scene.add(plane);
 
     // RENDERER
 
@@ -162,7 +169,7 @@ const initThree = () => {
   function onDocumentKeyDown(event) {
     if (firstLetter) {
       firstLetter = false;
-      text = "";
+      text1 = "";
     }
 
     const keyCode = event.keyCode;
@@ -172,8 +179,8 @@ const initThree = () => {
     if (keyCode === 8) {
       event.preventDefault();
 
-      text = text.substring(0, text.length - 1);
-      refreshText();
+      text1 = text1.substring(0, text1.length - 1);
+      // refreshText2();
 
       return false;
     }
@@ -188,9 +195,9 @@ const initThree = () => {
       event.preventDefault();
     } else {
       const ch = String.fromCharCode(keyCode);
-      text += ch;
+      text1 += ch;
 
-      refreshText();
+      refreshText2();
     }
   }
 
@@ -233,17 +240,20 @@ const initThree = () => {
   }
 };
 
-const refreshText = () => {
+const refreshText1 = () => {
   group.remove(textMesh1);
-  if (mirror) group.remove(textMesh2);
-
-  if (!text) return;
-
-  createText();
+  if (finshFlag) return;
+  createText1();
 };
 
-const createText = () => {
-  textGeo = new TextGeometry(text, {
+const refreshText2 = () => {
+  group.remove(textMesh2);
+  if (finshFlag) return;
+  createText2();
+};
+
+const createText1 = () => {
+  const textGeo1 = new TextGeometry(text1, {
     font: font,
 
     size: size,
@@ -255,13 +265,13 @@ const createText = () => {
     bevelEnabled: true,
   });
 
-  textGeo.computeBoundingBox();
-  textGeo.computeVertexNormals();
+  textGeo1.computeBoundingBox();
+  textGeo1.computeVertexNormals();
 
   const centerOffset =
-    -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
+    -0.5 * (textGeo1.boundingBox.max.x - textGeo1.boundingBox.min.x);
 
-  textMesh1 = new THREE.Mesh(textGeo, material);
+  textMesh1 = new THREE.Mesh(textGeo1, material);
 
   textMesh1.position.x = centerOffset;
   textMesh1.position.y = hover;
@@ -271,19 +281,90 @@ const createText = () => {
   textMesh1.rotation.y = Math.PI * 2;
 
   group.add(textMesh1);
+};
 
-  if (mirror) {
-    textMesh2 = new THREE.Mesh(textGeo, material);
+const createText2 = () => {
+  const textGeo2 = new TextGeometry(text2, {
+    font: font,
 
-    textMesh2.position.x = centerOffset;
-    textMesh2.position.y = -hover;
-    textMesh2.position.z = height;
+    size: size2,
+    height: height,
+    curveSegments: curveSegments,
 
-    textMesh2.rotation.x = Math.PI;
-    textMesh2.rotation.y = Math.PI * 2;
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: true,
+  });
+  textGeo2.computeBoundingBox();
+  textGeo2.computeVertexNormals();
+  const centerOffset =
+    -0.5 * (textGeo2.boundingBox.max.x - textGeo2.boundingBox.min.x);
+  textMesh2 = new THREE.Mesh(textGeo2, material);
 
-    group.add(textMesh2);
-  }
+  textMesh2.position.x = centerOffset;
+  textMesh2.position.y = hover2;
+  textMesh2.position.z = height;
+
+  textMesh2.rotation.x = 0;
+  textMesh2.rotation.y = Math.PI * 2;
+
+  group.add(textMesh2);
+};
+
+const createText3 = () => {
+  const textGeo3 = new TextGeometry(text3, {
+    font: font,
+
+    size: size2,
+    height: height,
+    curveSegments: curveSegments,
+
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: true,
+  });
+  textGeo3.computeBoundingBox();
+  textGeo3.computeVertexNormals();
+  const centerOffset =
+    -0.5 * (textGeo3.boundingBox.max.x - textGeo3.boundingBox.min.x);
+  textMesh3 = new THREE.Mesh(textGeo3, material);
+
+  textMesh3.position.x = centerOffset;
+  textMesh3.position.y = hover2 + 80;
+  textMesh3.position.z = height;
+
+  textMesh3.rotation.x = 0;
+  textMesh3.rotation.y = Math.PI * 2;
+
+  group.add(textMesh3);
+};
+
+const createText4 = () => {
+  const textGeo4 = new TextGeometry(text4, {
+    font: font,
+
+    size: size2,
+    height: height,
+    curveSegments: curveSegments,
+
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: true,
+  });
+  textGeo4.computeBoundingBox();
+  textGeo4.computeVertexNormals();
+  const centerOffset =
+    -0.5 * (textGeo4.boundingBox.max.x - textGeo4.boundingBox.min.x);
+  textMesh4 = new THREE.Mesh(textGeo4, material);
+
+  textMesh4.position.x = centerOffset;
+  textMesh4.position.y = hover2 - 60;
+  textMesh4.position.z = height;
+
+  textMesh4.rotation.x = 0;
+  textMesh4.rotation.y = Math.PI * 2;
+
+  group.add(textMesh4);
 };
 
 const addZero: any = (num: string | number, length = 2) => {
@@ -294,34 +375,32 @@ const addZero: any = (num: string | number, length = 2) => {
 };
 
 const countDown = () => {
-  const dataOffset = 8 * 60 * 60 * 1000;
-  const deadlineTimeStamp = global.$moment("2023-08-21 15:00:00");
+  const deadlineTimeStamp = global.$moment(deadlineStr);
 
   const loop = () => {
     setTimeout(() => {
-      var x = global.$moment(); //当前时间
-      // var duration = global.$moment.duration(deadlineTimeStamp.diff(x));
-      // const durationAsMilliseconds = duration.as("milliseconds");
+      const currentTime = global.$moment(); //当前时间
 
       const duratioTimeStamp = global
         .$moment(deadlineTimeStamp)
-        .diff(global.$moment(x), "milliseconds");
-      const hours = global.$moment.duration(duratioTimeStamp).hours();
+        .diff(global.$moment(currentTime), "milliseconds");
+      const days = global.$moment.duration(duratioTimeStamp).days();
+      const hours =
+        global.$moment.duration(duratioTimeStamp).hours() + days * 24;
       const minutes = global.$moment.duration(duratioTimeStamp).minutes();
       const seconds = global.$moment.duration(duratioTimeStamp).seconds();
 
-      text = `${addZero(hours)}:${addZero(minutes)}:${addZero(seconds)}`;
-
-      console.log(duratioTimeStamp);
-      console.log(
-        global
-          .$moment(duratioTimeStamp)
-          // .locale("zh-cn")
-          .format("yyyy-MM-DD hh:mm:ss")
-      );
-      console.log(text);
-      refreshText();
-      loop();
+      text2 = `${hours}小时 ${addZero(minutes)}分 ${addZero(seconds)}秒`;
+      refreshText2();
+      if (hours <= 0 && minutes <= 0 && seconds <= 0) {
+        finshFlag = true;
+        group.remove(textMesh1);
+        group.remove(textMesh2);
+        createText3();
+        createText4();
+      } else {
+        loop();
+      }
     }, 1000);
   };
   loop();
@@ -330,7 +409,6 @@ const countDown = () => {
 onMounted(async () => {
   initThree();
   countDown();
-  nextTick();
 });
 </script>
 
