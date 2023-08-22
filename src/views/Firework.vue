@@ -16,8 +16,6 @@ import {
   ComponentInternalInstance,
   nextTick,
 } from "vue";
-import * as THREE from "three";
-import { Geometry } from "three/examples/jsm/deprecated/Geometry";
 
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
@@ -37,7 +35,7 @@ const firework = () => {
       fireworkAngleSpan: 0.5,
       baseFireworkVel: 3,
       addedFireworkVel: 3,
-      gravity: 0.03,
+      gravity: 0.01,
       lowVelBoundary: -0.2,
       xFriction: 0.995,
       baseShardVel: 1,
@@ -335,6 +333,6 @@ onMounted(async () => {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2222;
+  z-index: 2;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="countdown" ref="countdownRef">
-    <Firework />
+    <Firework v-if="state.finishFlag" />
     <Background />
     <Star />
   </div>
@@ -33,7 +33,13 @@ const countdownRef = ref(null);
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
 
-const state = reactive({});
+const state = reactive({
+  finishFlag: false,
+  cheat: "",
+  hours: 0,
+  minutes: 0,
+  seconds: 0,
+});
 
 const currentRoute = computed(() => {
   return global.$route;
@@ -49,11 +55,9 @@ let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
 // const deadlineStr = "2023-08-23 21:00:00";
-const deadlineStr = "2023-08-21 16:33:00";
+const deadlineStr = "2023-08-22 10:54:00";
 
 let font = null;
-
-let finshFlag = false;
 
 let targetRotation = 0;
 let targetRotationOnPointerDown = 0;
@@ -249,13 +253,13 @@ const initThree = () => {
 
 const refreshText1 = () => {
   group.remove(textMesh1);
-  if (finshFlag) return;
+  if (state.finishFlag) return;
   createText1();
 };
 
 const refreshText2 = () => {
   group.remove(textMesh2);
-  if (finshFlag) return;
+  if (state.finishFlag) return;
   createText2();
 };
 
@@ -383,24 +387,35 @@ const addZero: any = (num: string | number, length = 2) => {
 
 const countDown = () => {
   const deadlineTimeStamp = global.$moment(deadlineStr);
-
   const loop = () => {
     setTimeout(() => {
       const currentTime = global.$moment(); //当前时间
-
+      text2 = "";
       const duratioTimeStamp = global
         .$moment(deadlineTimeStamp)
         .diff(global.$moment(currentTime), "milliseconds");
       const days = global.$moment.duration(duratioTimeStamp).days();
-      const hours =
+      state.hours =
         global.$moment.duration(duratioTimeStamp).hours() + days * 24;
-      const minutes = global.$moment.duration(duratioTimeStamp).minutes();
-      const seconds = global.$moment.duration(duratioTimeStamp).seconds();
+      state.minutes = global.$moment.duration(duratioTimeStamp).minutes();
+      state.seconds = global.$moment.duration(duratioTimeStamp).seconds();
 
-      text2 = `${hours}小时 ${addZero(minutes)}分 ${addZero(seconds)}秒`;
+      if (state.hours > 0) {
+        text2 += `${state.hours}小时 `;
+      }
+      if (state.minutes > 0) {
+        text2 += `${addZero(state.minutes)}分 `;
+      }
+      if (state.seconds > 0) {
+        text2 += `${addZero(state.seconds)}秒`;
+      }
       refreshText2();
-      if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-        finshFlag = true;
+
+      if (
+        (state.hours <= 0 && state.minutes <= 0 && state.seconds <= 0) ||
+        state.finishFlag
+      ) {
+        state.finishFlag = true;
         group.remove(textMesh1);
         group.remove(textMesh2);
         createText3();
@@ -413,9 +428,24 @@ const countDown = () => {
   loop();
 };
 
+const cheat = () => {
+  let cheatArr = [];
+  document.addEventListener("keyup", (event: any) => {
+    if (event.code === "Digit0" || event.code === "Numpad0") {
+      state.cheat += event.key;
+    }
+    cheatArr = state.cheat.split("");
+
+    if (cheatArr.filter((item: string) => item === "0").length >= 5) {
+      state.finishFlag = true;
+    }
+  });
+};
+
 onMounted(async () => {
   initThree();
   countDown();
+  cheat();
 });
 </script>
 
