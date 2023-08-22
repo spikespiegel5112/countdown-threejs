@@ -2,7 +2,7 @@
   <div class="countdown" ref="countdownRef">
     <Firework />
     <Background />
-    <!-- <Star /> -->
+    <Star />
   </div>
 </template>
 
