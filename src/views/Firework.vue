@@ -44,7 +44,7 @@ const firework = () => {
       baseShardsParFirework: 20,
       addedShardsParFirework: 10,
       shardFireworkVelMultiplier: 0.3,
-      initHueMultiplier: 1 / 10,
+      initHueMultiplier: 1 / 7,
       runHueAdder: 0.1 / 360,
     };
 
