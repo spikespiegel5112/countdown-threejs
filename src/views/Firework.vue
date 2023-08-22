@@ -30,21 +30,21 @@ const firework = () => {
     h = (c.height = window.innerHeight),
     webgl = {},
     opts = {
-      projectileAlpha: 0.8,
-      projectileLineWidth: 1.3,
-      fireworkAngleSpan: 0.5,
-      baseFireworkVel: 3,
-      addedFireworkVel: 3,
-      gravity: 0.01,
+      projectileAlpha: 1,
+      projectileLineWidth: 5,
+      fireworkAngleSpan: 1,
+      baseFireworkVel: 10,
+      addedFireworkVel: 10,
+      gravity: 0.15,
       lowVelBoundary: -0.2,
-      xFriction: 0.995,
-      baseShardVel: 1,
-      addedShardVel: 0.2,
-      fireworks: 1000,
-      baseShardsParFirework: 10,
+      xFriction: 1,
+      baseShardVel: 6,
+      addedShardVel: 1,
+      fireworks: 300,
+      baseShardsParFirework: 20,
       addedShardsParFirework: 10,
       shardFireworkVelMultiplier: 0.3,
-      initHueMultiplier: 1 / 360,
+      initHueMultiplier: 1 / 10,
       runHueAdder: 0.1 / 360,
     };
 
@@ -272,7 +272,7 @@ void main(){
     this.y += this.vy += opts.gravity;
 
     var proportion = 1 - (this.y - this.starty) / (h - this.starty);
-
+    // console.log(this.parent.hue);
     webgl.data.push(
       px,
       py,
@@ -333,6 +333,6 @@ onMounted(async () => {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
+  // z-index: 2;
 }
 </style>

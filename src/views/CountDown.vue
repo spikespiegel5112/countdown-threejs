@@ -54,8 +54,8 @@ let text1 = "距离护网结束还有";
 let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
-// const deadlineStr = "2023-08-23 21:00:00";
-const deadlineStr = "2023-08-22 10:54:00";
+const deadlineStr = "2023-08-23 21:00:00";
+// const deadlineStr = "2023-08-22 13:11:00";
 
 let font = null;
 
@@ -403,12 +403,11 @@ const countDown = () => {
       if (state.hours > 0) {
         text2 += `${state.hours}小时 `;
       }
-      if (state.minutes > 0) {
+      if (state.hours > 0 || (state.hours === 0 && state.minutes > 0)) {
         text2 += `${addZero(state.minutes)}分 `;
       }
-      if (state.seconds > 0) {
-        text2 += `${addZero(state.seconds)}秒`;
-      }
+      text2 += `${addZero(state.seconds)}秒`;
+
       refreshText2();
 
       if (
