@@ -36,6 +36,7 @@ const state = reactive({
 watch(
   () => props.play,
   async (newValue: any) => {
+    console.log("watch props.play+++", newValue);
     if (!!newValue) {
       await nextTick();
       playVideo();

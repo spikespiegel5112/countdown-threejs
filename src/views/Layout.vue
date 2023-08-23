@@ -1,8 +1,8 @@
 <template>
   <div class="countdown" ref="countdownRef">
-    <!-- <Firework v-if="state.finishFlag" /> -->
     <Video :play="state.finishFlag" v-show="state.finishFlag" />
     <CountDown v-if="!state.finishFlag" @onFinshed="handleOnFinshed" />
+    <Firework />
     <Background v-if="!state.finishFlag" />
     <Star v-if="!state.finishFlag" />
   </div>
@@ -26,6 +26,7 @@ import Background from "./Background.vue";
 import Star from "./Star.vue";
 import Flare from "./Flare.vue";
 import CountDown from "./CountDown.vue";
+import Firework from "./Firework.vue";
 
 const countdownRef = ref(null);
 
@@ -37,7 +38,10 @@ const state = reactive({
 });
 
 const handleOnFinshed = () => {
-  state.finishFlag = true;
+  state.finishFlag = false;
+  setTimeout(() => {
+    state.finishFlag = true;
+  }, 3000);
 };
 
 onMounted(async () => {});

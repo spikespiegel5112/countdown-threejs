@@ -53,7 +53,7 @@ let text1 = "距离护网结束还有";
 let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
-const deadlineStr = "2023-08-23 20:59:30";
+const deadlineStr = "2023-08-23 21:00:00";
 // const deadlineStr = "2023-08-23 14:17:00";
 
 let font = null;
@@ -258,7 +258,7 @@ const refreshText1 = () => {
 
 const refreshText2 = () => {
   group.remove(textMesh2);
-  if (state.finishFlag) return;
+  // if (state.finishFlag) return;
   createText2();
 };
 
@@ -414,12 +414,13 @@ const countDown = () => {
         state.finishFlag
       ) {
         state.finishFlag = true;
-        emit("onFinshed", state.finishFlag);
+        emit("onFinshed", true);
+        loop();
 
-        group.remove(textMesh1);
-        group.remove(textMesh2);
-        createText3();
-        createText4();
+        // group.remove(textMesh1);
+        // group.remove(textMesh2);
+        // createText3();
+        // createText4();
       } else {
         loop();
       }
@@ -441,6 +442,8 @@ const cheat = () => {
     cheatArr = state.cheat.split("");
     if (cheatArr.filter((item: string) => item === "0").length >= 5) {
       state.finishFlag = true;
+      cheatArr = [];
+      emit("onFinshed", true);
     }
 
     if (event.code === "Digit1" || event.code === "Numpad1") {
