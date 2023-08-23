@@ -1,5 +1,7 @@
 <template>
-  <div class="video_container"></div>
+  <div class="video_container">
+    <img v-if="state.ended" src="@/assets/1692771094104.jpg" alt="" />
+  </div>
 </template>
 
 <script lang="tsx" setup>
@@ -20,7 +22,9 @@ const global = currentInstance.appContext.config.globalProperties;
 
 const videoRef = ref();
 
-const state = reactive({});
+const state = reactive({
+  ended: false,
+});
 
 const playVideo = () => {
   var videoEl = document.createElement("video");
@@ -38,6 +42,10 @@ const playVideo = () => {
   videoEl.addEventListener("canplaythrough", function (e) {
     videoEl.play();
     videoEl.muted = false;
+  });
+
+  videoEl.addEventListener("ended", function (e) {
+    state.ended = true;
   });
 };
 
@@ -58,6 +66,15 @@ onMounted(async () => {
   video {
     display: block;
     width: 100%;
+  }
+  img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2222;
   }
 }
 </style>

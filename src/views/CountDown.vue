@@ -53,8 +53,8 @@ let text1 = "距离护网结束还有";
 let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
-// const deadlineStr = "2023-08-23 20:59:30";
-const deadlineStr = "2023-08-23 14:02:00";
+const deadlineStr = "2023-08-23 20:59:30";
+// const deadlineStr = "2023-08-23 14:17:00";
 
 let font = null;
 
