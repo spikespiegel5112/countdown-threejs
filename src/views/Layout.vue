@@ -1,32 +1,46 @@
 <template>
-  <div class="layout_container" ref="layoutRef">
-    <div class="content" ref="contentRef"></div>
+  <div class="countdown" ref="countdownRef">
+    <!-- <Firework v-if="state.finishFlag" /> -->
+    <Video v-if="state.finishFlag" />
+    <CountDown v-if="!state.finishFlag" @onFinshed="handleOnFinshed" />
+    <Background v-if="!state.finishFlag" />
+    <Star v-if="!state.finishFlag" />
   </div>
 </template>
 
 <script lang="tsx" setup>
-import VConsole from "vconsole";
-
 import {
+  ref,
+  unref,
   reactive,
   watch,
   computed,
   onMounted,
-  onBeforeUnmount,
   getCurrentInstance,
   ComponentInternalInstance,
-  ref,
   nextTick,
 } from "vue";
+
+import Video from "./Video.vue";
+import Background from "./Background.vue";
+import Star from "./Star.vue";
+import Flare from "./Flare.vue";
+import CountDown from "./CountDown.vue";
+
+const countdownRef = ref(null);
 
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
 
-const state = reactive({});
+const state = reactive({
+  finishFlag: false,
+});
+
+const handleOnFinshed = () => {
+  state.finishFlag = true;
+};
 
 onMounted(async () => {});
-
-onBeforeUnmount(() => {});
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss"></style>

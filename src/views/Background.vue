@@ -37,17 +37,16 @@ span {
   font-size: 50px;
   color: white;
 }
+
+
 .background {
   width: 100vw;
   height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.background {
-  // background-color: #0c0003;
   opacity: 0.5;
+  z-index: 2;
   background-image: radial-gradient(
       closest-side,
       rgb(29, 1, 93),

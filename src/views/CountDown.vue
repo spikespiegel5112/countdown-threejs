@@ -1,9 +1,5 @@
 <template>
-  <div class="countdown" ref="countdownRef">
-    <Firework v-if="state.finishFlag" />
-    <Background />
-    <Star />
-  </div>
+  <div class="countdown" ref="countdownRef"></div>
 </template>
 
 <script lang="tsx" setup>
@@ -16,6 +12,8 @@ import {
   onMounted,
   getCurrentInstance,
   ComponentInternalInstance,
+  emit,
+  defineEmits,
   nextTick,
 } from "vue";
 
@@ -24,11 +22,11 @@ import { TTFLoader } from "three/addons/loaders/TTFLoader.js";
 import { Font } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
-import Background from "./Background.vue";
-import Star from "./Star.vue";
-import Firework from "./Firework.vue";
-
 const countdownRef = ref(null);
+
+const emit = defineEmits<{
+  (e: "onFinshed", data: any): void;
+}>();
 
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
@@ -47,6 +45,7 @@ const currentRoute = computed(() => {
 
 let container;
 let camera, cameraTarget, scene, renderer;
+let dirLight1;
 let group, textMesh1, textMesh2, textMesh3, textMesh4, material;
 let firstLetter = true;
 const mirror = true;
@@ -54,8 +53,8 @@ let text1 = "距离护网结束还有";
 let text2 = "00:00:00";
 let text3 = "海通恒信护网行动工作";
 let text4 = "圆满完成";
-const deadlineStr = "2023-08-23 21:00:00";
-// const deadlineStr = "2023-08-22 13:11:00";
+// const deadlineStr = "2023-08-23 20:59:30";
+const deadlineStr = "2023-08-23 14:02:00";
 
 let font = null;
 
@@ -103,9 +102,9 @@ const initThree = () => {
 
     // LIGHTS
 
-    const dirLight1 = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight1 = new THREE.DirectionalLight(0xffffff, 1);
     dirLight1.position.set(0, 0, 1).normalize();
-    scene.add(dirLight1);
+    // scene.add(dirLight1);
 
     // const dirLight2 = new THREE.DirectionalLight(0xffffff, 2);
     // dirLight2.position.set(0, hover, 10).normalize();
@@ -411,10 +410,12 @@ const countDown = () => {
       refreshText2();
 
       if (
-        (state.hours <= 0 && state.minutes <= 0 && state.seconds <= 0) ||
+        (state.hours <= 0 && state.minutes <= 0 && state.seconds <= 30) ||
         state.finishFlag
       ) {
         state.finishFlag = true;
+        emit("onFinshed", state.finishFlag);
+
         group.remove(textMesh1);
         group.remove(textMesh2);
         createText3();
@@ -429,14 +430,26 @@ const countDown = () => {
 
 const cheat = () => {
   let cheatArr = [];
+  let gesture = "";
+  let gestureArr = [];
+
   document.addEventListener("keyup", (event: any) => {
+    console.log(event);
     if (event.code === "Digit0" || event.code === "Numpad0") {
       state.cheat += event.key;
     }
     cheatArr = state.cheat.split("");
-
     if (cheatArr.filter((item: string) => item === "0").length >= 5) {
       state.finishFlag = true;
+    }
+
+
+    if (event.code === "Digit1" || event.code === "Numpad1") {
+      gesture += event.key;
+    }
+    gestureArr = gesture.split("");
+    if (gestureArr.filter((item: string) => item === "1").length >= 5) {
+      scene.add(dirLight1);
     }
   });
 };
@@ -453,7 +466,7 @@ onMounted(async () => {
   width: 100vw;
   height: 100vh;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   background-color: transparent;
   canvas {
     background-color: transparent;

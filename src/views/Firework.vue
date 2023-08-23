@@ -16,10 +16,10 @@ import {
   ComponentInternalInstance,
   nextTick,
 } from "vue";
+import * as THREE from "three";
 
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
-
 const fireworkRef = ref();
 
 const state = reactive({});

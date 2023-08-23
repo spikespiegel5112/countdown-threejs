@@ -8,9 +8,15 @@ import {
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "CountDown",
+    name: "App",
     component: () =>
-      import(/* webpackChunkName: "CountDown" */ "../views/CountDown.vue"),
+      import(/* webpackChunkName: "App" */ "../App.vue"),
+  },
+  {
+    path: "/main",
+    name: "Layout",
+    component: () =>
+      import(/* webpackChunkName: "Layout" */ "../views/Layout.vue"),
   },
 ];
 
