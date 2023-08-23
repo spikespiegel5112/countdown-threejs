@@ -1,7 +1,7 @@
 <template>
   <div class="countdown" ref="countdownRef">
     <!-- <Firework v-if="state.finishFlag" /> -->
-    <Video v-if="state.finishFlag" />
+    <Video :play="state.finishFlag" v-show="state.finishFlag" />
     <CountDown v-if="!state.finishFlag" @onFinshed="handleOnFinshed" />
     <Background v-if="!state.finishFlag" />
     <Star v-if="!state.finishFlag" />

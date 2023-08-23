@@ -20,37 +20,82 @@ import {
 const currentInstance = getCurrentInstance() as ComponentInternalInstance;
 const global = currentInstance.appContext.config.globalProperties;
 
+interface Props {
+  play?: boolean;
+}
+const props = withDefaults(defineProps<Props>(), {
+  play: false,
+});
+
 const videoRef = ref();
 
 const state = reactive({
   ended: false,
 });
 
+watch(
+  () => props.play,
+  async (newValue: any) => {
+    if (!!newValue) {
+      await nextTick();
+      playVideo();
+    }
+  }
+);
+
+const videoEl = document.createElement("video");
+
 const playVideo = () => {
-  var videoEl = document.createElement("video");
+  if (!!state.ended) return;
+  videoEl
+    .play()
+    .then((response: any) => {})
+    .catch((error) => {
+      videoEl.muted = true;
+      videoEl.play();
+    });
+};
+
+const init = () => {
   videoEl.setAttribute("id", "video");
   videoEl.loop = false;
   videoEl.preload = "auto";
   videoEl.muted = true;
   videoEl.className = "video";
   // videoEl.autoplay = true;
-  videoEl.src = require("@/assets/countdown.mp4");
-  videoEl.addEventListener("loadedmetadata", function (e) {
-    document.querySelector(".video_container").appendChild(videoEl);
-  });
-
+  videoEl.src =
+    process.env.NODE_ENV === "production"
+      ? "./countdown.mp4"
+      : "/countdown.mp4";
   videoEl.addEventListener("canplaythrough", function (e) {
-    videoEl.play();
     videoEl.muted = false;
   });
 
   videoEl.addEventListener("ended", function (e) {
     state.ended = true;
   });
+  videoEl.addEventListener("loadedmetadata", function (e) {
+    document.querySelector(".video_container").appendChild(videoEl);
+  });
+};
+
+const handleFinished = () => {
+  const currentTimeStamp = global.$moment().valueOf();
+  const finishedTimeStamp = global.$moment("2023-08-23T21:03:00").valueOf();
+  if (currentTimeStamp > finishedTimeStamp) {
+    state.ended = true;
+  }
 };
 
 onMounted(async () => {
-  playVideo();
+  console.log(
+    "handleFinished+++",
+    global.$moment().format("yyyy-MM-DD HH:mm:ss")
+  );
+
+  handleFinished();
+
+  init();
 });
 </script>
 
@@ -66,8 +111,9 @@ onMounted(async () => {
   video {
     display: block;
     width: 100%;
+    background-color: #000;
   }
-  img{
+  img {
     display: block;
     width: 100%;
     height: 100%;

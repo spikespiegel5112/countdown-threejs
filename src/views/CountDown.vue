@@ -443,12 +443,11 @@ const cheat = () => {
       state.finishFlag = true;
     }
 
-
     if (event.code === "Digit1" || event.code === "Numpad1") {
       gesture += event.key;
     }
     gestureArr = gesture.split("");
-    if (gestureArr.filter((item: string) => item === "1").length >= 5) {
+    if (gestureArr.filter((item: string) => item === "1").length >= 3) {
       scene.add(dirLight1);
     }
   });
